@@ -9,7 +9,7 @@ Author(s): Michelle Chang
 
 import math
 from process_audio import Extract_Features
-# from model import make_model, predction
+from model import model # which has make_model and prediction functions in the class
 
 
 def audio_list(txt_file, path):
@@ -24,6 +24,7 @@ def audio_list(txt_file, path):
             a list of names/file paths of the training audio files
     '''
     file_path = txt_file
+    # will be reading the bextract_single.mf file
     file = open(file_path, 'r')
     audio_list = []
 
@@ -36,7 +37,6 @@ def audio_list(txt_file, path):
         processed_name = path + audio_name + ".wav"
         audio_list.append(i)
     file.close()
-
     return audio_list
 
 
