@@ -58,6 +58,8 @@ class Extract_Features():
         # mfcc_mean and mfcc_sd are both lists
         self.features.append(mfcc_mean)
         self.features.append(mfcc_sd)
+        return (mfcc_mean, mfcc_sd)
+        # returns a tuple of two lists
 
     def extract_zero_crossing(self):
         '''
@@ -69,14 +71,13 @@ class Extract_Features():
             None
         '''
         zero_crossing = librosa.feature.zero_crossing_rate(self.y)
-        crossing_mean = []
-        crossing_sd = []
-        for i in range(len(zero_crossing)):
-            crossing_mean.append(np.mean(zero_crossing[i]))
-            crossing_sd.append(np.std(zero_crossing[i]))
-        # crossing_mean and crossing_sd are both lists
+        # zero_crossing is a list
+        crossing_mean = np.mean(zero_crossing)
+        crossing_sd = np.std(zero_crossing)
         self.features.append(crossing_mean)
         self.features.append(crossing_sd)
+        return (crossing_mean, crossing_sd)
+        # returns a tuple of two floats
 
     def extract_spectral_centroid(self):
         '''
@@ -88,14 +89,13 @@ class Extract_Features():
             None
         '''
         centroid = librosa.feature.spectral_centroid(self.y, sr=self.sr)
-        centroid_mean = []
-        centroid_sd = []
-        for i in range(len(centroid)):
-            centroid_mean.append(np.mean(centroid[i]))
-            centroid_sd.append(np.std(centroid[i]))
-        # crossing_mean and crossing_sd are both lists
+        # centroid is a list
+        centroid_mean = np.mean(centroid)
+        centroid_sd = np.std(centroid)
         self.features.append(centroid_mean)
         self.features.append(centroid_sd)
+        return (centroid_mean, centroid_sd)
+        # returns a tuple of two floats
 
     def extract_spectral_contrast(self):
         '''
@@ -116,6 +116,8 @@ class Extract_Features():
         # contrast_mean and contrast_sd are both lists
         self.features.append(contrast_mean)
         self.features.append(contrast_sd)
+        return (contrast_mean, contrast_sd)
+        # returns a tuple of two lists
 
     def extract_tempo(self):
         '''
@@ -134,10 +136,11 @@ class Extract_Features():
         '''
         onset_env = librosa.onset.onset_strength(self.y, sr=self.sr)
         tempo = librosa.beat.tempo(onset_envelope=onset_env, sr=self.sr)
-        # tempo is an array
-        self.features.append(list(tempo))
+        self.features.append(float(list(tempo)[0]))
+        return float(list(tempo)[0])
+        # returns a single float value
 
-    def save_features_info(self):
+    def save_features(self):
         '''
         This function will save all the information and features about our 
         audio file 
@@ -147,23 +150,10 @@ class Extract_Features():
             none (creates and writes pickle file)
         '''
         base_name = self.name.split(".wav")[0]
-        file_path = base_name + "_data.txt"
+        file_path = base_name + "_features.txt"
         file = open(file_path, "wb")
         pickle.dump(self.features, file)
         file.close()
-
-    # def visualize(self):
-    #     '''
-    #     This function will plot a monophonic waveform of the audio file
-    #     **Parameters**
-    #         none
-    #     **Returns**
-    #         none
-    #     '''
-    #     plt.figure()
-    #     librosa.display.waveplot(self.y, sr=self.sr)
-    #     fig = plt.gcf()
-    #     fig.savefig("/Users/michellechang/Downloads/graph.png")
 
 
 if __name__ == '__main__':
@@ -171,10 +161,10 @@ if __name__ == '__main__':
     genre = "blues"
     processed_file = Extract_Features(
         audio_file, genre, duration=30, offset=None)
-    processed_file.extract_mfcc()
-    processed_file.extract_zero_crossing()
-    processed_file.extract_spectral_centroid()
-    processed_file.extract_spectral_contrast()
-    processed_file.extract_tempo()
-    processed_file.save_features_info()
+    print(processed_file.extract_mfcc())
+    print(processed_file.extract_zero_crossing())
+    print(processed_file.extract_spectral_centroid())
+    print(processed_file.extract_spectral_contrast())
+    print(processed_file.extract_tempo())
+    # processed_file.save_features()
     # print(processed_file.features)
