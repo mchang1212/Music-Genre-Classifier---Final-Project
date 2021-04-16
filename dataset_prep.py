@@ -42,12 +42,18 @@ def dataset(data_path):
                 spect_cent = output.extract_spectral_centroid()
                 spect_cont = output.extract_spectral_contrast()
                 temp = output.extract_tempo()
+                output.save_features()
                 data['mfcc'].append(mfcc)
                 data['zero_crossing'].append(zero_cross)
                 data['spectral_centroid'].append(spect_cent)
                 data['spectral_contrast'].append(spect_cont)
                 data['tempo'].append(temp)
-
+    
+    file_path = data_path + "all_data_features.txt"
+    file = open(file_path, "wb")
+    pickle.dump(data, file)
+    file.close() 
+    # print(data['spectral_centroid'])  
 
 if __name__ == '__main__':
     data_path = '/Users/hwcho/Desktop/genres/genres/'
