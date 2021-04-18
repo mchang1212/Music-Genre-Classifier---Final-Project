@@ -37,19 +37,25 @@ def dataset(data_path):
             for f in filenames:
                 # load audio file
                 file_path = os.path.join(dirpath, f)
-                output = Extract_Features(file_path, genres[i - 1],
-                                          duration=30, offset=None)
-                mfcc = output.extract_mfcc()
-                zero_cross = output.extract_zero_crossing()
-                spect_cent = output.extract_spectral_centroid()
-                spect_cont = output.extract_spectral_contrast()
-                temp = output.extract_tempo()
-                data['mfcc'].append(mfcc)
-                data['zero_crossing'].append(zero_cross)
-                data['spectral_centroid'].append(spect_cent)
-                data['spectral_contrast'].append(spect_cont)
-                data['tempo'].append(temp)
-                data['numbered_label'].append(i - 1)
+                print(file_path)
+                substring = "wav"
+                if substring in file_path:
+                    output = Extract_Features(file_path, genres[i - 1],
+                                              duration=30, offset=None)
+                    mfcc = output.extract_mfcc()
+                    zero_cross = output.extract_zero_crossing()
+                    spect_cent = output.extract_spectral_centroid()
+                    spect_cont = output.extract_spectral_contrast()
+                    temp = output.extract_tempo()
+                    # output.save_features()
+                    data['mfcc'].append(mfcc)
+                    data['zero_crossing'].append(zero_cross)
+                    data['spectral_centroid'].append(spect_cent)
+                    data['spectral_contrast'].append(spect_cont)
+                    data['tempo'].append(temp)
+                else:
+                    print("Not a valid file!")
+                    
     pickle.dump(data, open('data_features.txt', 'wb'))
 
 
