@@ -11,8 +11,6 @@ import librosa
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
-
-
 class Extract_Features():
     def __init__(self, audio_file, genre, duration=30, offset=None):
         '''
@@ -72,12 +70,7 @@ class Extract_Features():
         '''
         zero_crossing = librosa.feature.zero_crossing_rate(self.y)
         # zero_crossing is a list
-        crossing_mean = np.mean(zero_crossing)
-        crossing_sd = np.std(zero_crossing)
-        self.features.append(crossing_mean)
-        self.features.append(crossing_sd)
-        return (crossing_mean, crossing_sd)
-        # returns a tuple of two floats
+        return zero_crossing[0].tolist()
 
     def extract_spectral_centroid(self):
         '''
@@ -90,12 +83,7 @@ class Extract_Features():
         '''
         centroid = librosa.feature.spectral_centroid(self.y, sr=self.sr)
         # centroid is a list
-        centroid_mean = np.mean(centroid)
-        centroid_sd = np.std(centroid)
-        self.features.append(centroid_mean)
-        self.features.append(centroid_sd)
-        return (centroid_mean, centroid_sd)
-        # returns a tuple of two floats
+        return centroid[0].tolist()
 
     def extract_spectral_contrast(self):
         '''
@@ -166,5 +154,4 @@ if __name__ == '__main__':
     print(processed_file.extract_spectral_centroid())
     print(processed_file.extract_spectral_contrast())
     print(processed_file.extract_tempo())
-    # processed_file.save_features()
-    # print(processed_file.features)
+    processed_file.save_features()
