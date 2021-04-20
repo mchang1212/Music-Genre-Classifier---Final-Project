@@ -39,28 +39,6 @@ def euclidean_dist(data1, data2):
     return euc_dist
 
 
-def cosine_similarity(data1, data2):
-    '''
-    This function calculates the cosine similarity between
-    two data points (of vector form)
-    **Parameters**
-        data1: *list* of floats
-            the features info of first audio file
-        data2: *list* of floats
-            the features info of second audio file
-    **Returns**
-        cos_sim: *float*
-          the cosine similarity value between two data points
-    '''
-    a = np.array(data1)
-    b = np.array(data2)
-    dot = np.dot(a, b)
-    norma = np.linalg.norm(a)
-    normb = np.linalg.norm(b)
-    cos_sim = abs(dot/(norma*normb))
-    return cos_sim
-
-
 def minkowski_dist(data1, data2, pval):
     '''
     This function calculates the Minkowski distance between
@@ -106,7 +84,7 @@ def find_Kneighbors(data_train, indiv_test, num_neighbors):
     neighbors = []
     data_train = data_train.tolist()
     for indiv_train in data_train:
-        dist = minkowski_dist(indiv_test, indiv_train, 3)
+        dist = euclidean_dist(indiv_test, indiv_train)
         distances.append(dist)
     for i in range(num_neighbors):
         min_dist = distances.index(min(distances))
@@ -162,7 +140,8 @@ if __name__ == '__main__':
         mfcc_mean.append(mfcc_vals[i][0])
     correct_genre = audio_dataset['mapping']
 
-    # splitting dataset into train and test sets
+    # splitting dataset into train and test sets 
+    # (70% in train and 30% in test)
     data_train, data_test, genre_train, genre_test = train_test_split(
         mfcc_mean, correct_genre, test_size=0.30)
 
@@ -188,7 +167,6 @@ if __name__ == '__main__':
     '''
     NOTEs: 
     - Using mfcc_means, both euc_dist and mink_dist around 0.45 max accuracy
-        but cos_sim HORRIBLE ACCURACY LOL LIKE 0.05 
     - Using mfcc_sd, euc around 0.33, mink around 0.25
     - Using spec_contrast_means, both euc and mink around 0.35-0.4
     - Using spec_contrast_sd, euc around 0.3, mink around 0.25
