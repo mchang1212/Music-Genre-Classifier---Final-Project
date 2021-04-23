@@ -12,6 +12,7 @@ import process_audio
 from process_audio import Extract_Features
 
 
+# Dictionary of relevant features
 data = {
     'mapping': [],
     'numbered_label': [],
@@ -21,11 +22,22 @@ data = {
     'spectral_contrast': [],
     'tempo': []
 }
+
 genres = ["blues", "classical", "country", "disco",
           "hiphop", "jazz", "metal", "pop", "reggae", "rock"]
 
 
 def dataset(data_path):
+    '''
+    Reads .wav files in the designated file path and saves the 
+    extracted audio features into a dictionary, which is 
+    exported into a .pickle file.
+    **Parameters**
+        data_path: *str*
+            location of audio files
+    **Returns**
+        .pickle file
+    '''
     for i, (dirpath, dirnames, filenames) in enumerate(os.walk(data_path)):
         # make sure we are dealing with genre folders
         if dirpath is not data_path:
@@ -53,10 +65,11 @@ def dataset(data_path):
                     data['spectral_centroid'].append(spect_cent)
                     data['spectral_contrast'].append(spect_cont)
                     data['tempo'].append(temp)
+                    data['numbered_label'].append(i - 1)
                 else:
                     print("Not a valid file!")
                     
-    pickle.dump(data, open('data_features.txt', 'wb'))
+    pickle.dump(data, open('data_features.pickle', 'wb'))
 
 
 if __name__ == '__main__':
