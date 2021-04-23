@@ -38,6 +38,10 @@ def euclidean_dist(data1, data2):
     euc_dist = sqrt(distance)
     return euc_dist
 
+# alternative distance metric is the Minkowski distance. Currently,
+# our KNN model uses euclidean distance, but if you wish, you can
+# change to using the Minkowski distance.
+
 
 def minkowski_dist(data1, data2, pval):
     '''
@@ -85,6 +89,7 @@ def find_Kneighbors(data_train, indiv_test, num_neighbors):
     data_train = data_train.tolist()
     for indiv_train in data_train:
         dist = euclidean_dist(indiv_test, indiv_train)
+        # change here to minkowski_dist function if you wish
         distances.append(dist)
     for i in range(num_neighbors):
         min_dist = distances.index(min(distances))
@@ -125,7 +130,7 @@ def predict_type(data_train, indiv_test, num_neighbors):
 if __name__ == '__main__':
     # opening and storing features data for all audio files
     data_path = '/Users/michellechang/Desktop/genres/'
-    # dataset_prep.dataset(data_path)
+    dataset_prep.dataset(data_path)
     file_path = data_path + "data_features.txt"
     file = open(file_path, "rb")
     audio_dataset = pickle.load(file)
