@@ -12,8 +12,11 @@ pip install librosa
 Features extracted are Mel frequency cepstral coefficients (MFCC), zero-crossing rate, spectral centroid, spectral contrast, and tempo.
 
 ## Training model and making predictions
-
-## KNN vs. Keras method
+We decided to make a model using two different methods - KNN algorithm (utilizing scikit-learn) vs. Keras. Be sure to also install these two packages before running either code.
+```bash
+pip install -U scikit-learn
+pip install 
+```
 
 ## Other notes
 Please make sure that you have defined your file path (to where the downloaded audio files are stored) correctly! This is specifically
