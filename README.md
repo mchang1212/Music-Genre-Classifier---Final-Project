@@ -9,15 +9,17 @@ To extract features information from each audio file, we used the audio processi
 ```bash
 pip install librosa
 ```
-Features extracted are Mel frequency cepstral coefficients (MFCC), zero-crossing rate, spectral centroid, spectral contrast, and tempo.
+In the file process_audio.py, each audio file will be initialized as a class object and then features extracted are Mel frequency cepstral coefficients (MFCC), zero-crossing rate, spectral centroid, spectral contrast, and tempo. Each audio file's features can be saved as a pickled file if wished.
+In the file dataset_prep.py, we walk through all the audio files in the dataset and perform feature extract and then store all that information in a dictionary, which is saved as a pickled file.
 
 ## Training model and making predictions
 We decided to make a model using two different methods - KNN algorithm (utilizing scikit-learn) vs. Keras. Be sure to also install these two packages before running either code.
 ```bash
 pip install -U scikit-learn
-pip install 
+pip install keras
 ```
+K nearest neighbors algorithm is performed in the file KNN_model.py. We also utilized train_test_split, StandardScaler, and classification_report from sklearn to split the audio files into a training set and a testing set and also further process the features data before training the model. KNN utilizes a distance metric to find K nearest neighbors to a particular data point (audio file) of interest. We have written functions for both Euclidean distance and Minkowski distance, and the user can choose which to use while running the code. Once the model is trained by the training set and predictions of the genre of audio files in the testing set are made, we analyzed the precision, recall, and accuracy of the KNN model in predicting music genres. Our KNN model gives us a max accuracy of around 0.45.
+Keras model algorithm is performed in the file Keras_model.py. We again utilized train_test_split from sklearn to split the audio files into a training set and a testing set. SOME STUFF HERE ABOUT HERE IT WORKS. This model can then be analyzed by the summary function to find the accuracy of the model in predicting music genres. Our Keras model gives us a max accuracy of around 0.60.
 
 ## Other notes
-Please make sure that you have defined your file path (to where the downloaded audio files are stored) correctly! This is specifically
-for the string variable data_path in either KNN_model.py or Keras_model.py, depending on which model you wish to use.
+*IMPORTANT* Please make sure that you have defined your file path (to where the downloaded audio files are stored) correctly! This is specifically for the string variable data_path in either KNN_model.py or Keras_model.py, depending on which model you wish to use.
